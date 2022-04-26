@@ -80,7 +80,7 @@ const Router = ({ history, routerAnimation }) => {
                   timeout={routerAnimation === 'none' ? 0 : 300}
                 >
                   <Switch location={location}>
-                    <Route exact path="/" render={() => <Redirect to="/home" />} />
+                    <Route exact path="/" render={() => <Redirect to="/rooms" />} />
                     {routes.map(({ path, Component, exact }) => (
                       <Route
                         path={path}

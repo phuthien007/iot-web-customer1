@@ -5,6 +5,7 @@ module.exports = {
     "prettier"
   ],
   "rules": {
+    "no-shadow": "off",
     "react/jsx-filename-extension": [
       1,
       {

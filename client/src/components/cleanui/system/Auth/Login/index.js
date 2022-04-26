@@ -74,7 +74,7 @@ const Login = ({ dispatch, user, authProvider, logo }) => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           className="mb-4"
-          initialValues={{ email: 'demo@sellpixels.com', password: 'demo123' }}
+          initialValues={{ email: 'admin@sellpixels.com', password: 'admin' }}
         >
           <Form.Item
             name="email"
