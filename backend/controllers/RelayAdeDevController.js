@@ -1,4 +1,5 @@
 const RelayAdeDevModel = require("../models/RelayAdeDevModel");
+const clientMqqt = require("../mqtt");
 
 const getRelayAdeDevById = (req, res) => {
   RelayAdeDevModel.findById(req.params.id)
@@ -63,7 +64,11 @@ const createRelayAdeDev = (req, res) => {
   }
 };
 const deleteRelayAdeDev = (req, res) => {
-  RelayAdeDevModel.findByIdAndDelete(req.params.id)
+
+  clientMqqt.publish("mybk/smarthome/upstream", "Hello mqtt");
+  clientMqqt.on("message", function (topic, message) {
+    setTimeout(() => {
+      RelayAdeDevModel.findByIdAndUpdate(req.params.id, {room_id: null})
     .then((data) => {
       if (data) {
         res.status(200).json("Delete success");
@@ -74,6 +79,10 @@ const deleteRelayAdeDev = (req, res) => {
     .catch((err) => {
       res.status(500).json(err);
     });
+    }, 1000);
+  })
+
+  
 };
 
 const RelayAdeDevController = {

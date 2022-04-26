@@ -26,6 +26,9 @@ const SensorSchema = new Schema(
     room_id: {
         type: Schema.Types.ObjectId,
         ref: 'rooms'
+    },
+    dev_addr: {
+      type: String
     }
 
   },{

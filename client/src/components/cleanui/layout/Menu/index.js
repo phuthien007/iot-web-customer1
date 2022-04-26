@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { Drawer } from 'antd'
 import { connect } from 'react-redux'
 import MenuLeft from './MenuLeft'
-import MenuTop from './MenuTop'
 import style from './style.module.scss'
 
 const mapStateToProps = ({ settings }) => ({
@@ -85,9 +84,6 @@ const Menu = ({ dispatch, isMobileMenuOpen, isMobileView, menuLayoutType, leftMe
           </Drawer>
         </div>
       )
-    }
-    if (menuLayoutType === 'top') {
-      return <MenuTop />
     }
     if (menuLayoutType === 'nomenu') {
       return null

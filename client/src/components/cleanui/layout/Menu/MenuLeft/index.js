@@ -210,7 +210,7 @@ const MenuLeft = ({
             {generateMenuItems()}
           </Menu>
           <div className={style.banner}>
-            <p>Drminer - Trang web hỗ trợ lập Dailycheck report, Monthly report</p>
+            <p>Website created by React</p>
           </div>
         </PerfectScrollbar>
       </div>

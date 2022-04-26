@@ -1,5 +1,5 @@
 const SensorModel = require("../models/SensorModel");
-
+const clientMqqt = require("../mqtt");
 const getSensorById = (req, res) => {
   SensorModel.findById(req.params.id)
     .then((data) => {
@@ -62,18 +62,26 @@ const createSensor = (req, res) => {
     res.status(500).json(error);
   }
 };
-const deleteSensor = (req, res) => {
-  SensorModel.findByIdAndDelete(req.params.id)
-    .then((data) => {
-      if (data) {
-        res.status(200).json("Delete success");
-      } else {
-        res.status(404).json({ message: "Something went wrong!" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
+const deleteSensor = async (req, res) => {
+  let data = await SensorModel.findById(req.params.id);
+  let sensor = await data.data;
+
+  clientMqqt.publish("mybk/smarthome/upstream", "Hello mqtt");
+  clientMqqt.on("message", function (topic, message) {
+    setTimeout(() => {
+      SensorModel.findByIdAndUpdate(req.params.id, { room_id: null })
+        .then((data) => {
+          if (data) {
+            res.status(200).json("Delete success");
+          } else {
+            res.status(404).json({ message: "Something went wrong!" });
+          }
+        })
+        .catch((err) => {
+          res.status(500).json(err);
+        });
+    }, 1000);
+  });
 };
 
 const SensorController = {

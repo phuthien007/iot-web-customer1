@@ -1,4 +1,8 @@
 const RoomModel = require("../models/RoomModel");
+const Relay3ChannelModel = require('../models/Relay3ChannelModel')
+const RelayAdeDevModel = require('../models/RelayAdeDevModel')
+const SensorModel = require('../models/SensorModel')
+
 
 const getRoomById = (req, res) => {
   RoomModel.findById(req.params.id)
@@ -72,6 +76,60 @@ const createRoom = (req, res) => {
     });
 };
 const deleteRoom = (req, res) => {
+  Relay3ChannelModel.find({room_id: req.params.id})
+  .then(data => {
+      data.map(item => {
+        RelayAdeDevModel.findByIdAndUpdate(item._id, {room_id: null})
+    .then((data) => {
+      if (data) {
+        console.log('ok')
+      } else {
+        console.log(' not ok')
+
+      }
+    })
+    .catch((err) => {
+      console.log(' not ok')
+    });
+      })
+  })
+
+  RelayAdeDevModel.find({room_id: req.params.id})
+  .then(data => {
+      data.map(item => {
+        RelayAdeDevModel.findByIdAndUpdate(item._id, {room_id: null})
+    .then((data) => {
+      if (data) {
+        console.log('ok')
+      } else {
+        console.log(' not ok')
+
+      }
+    })
+    .catch((err) => {
+      console.log(' not ok')
+    });
+      })
+  })
+
+  SensorModel.find({room_id: req.params.id})
+  .then(data => {
+      data.map(item => {
+        SensorModel.findByIdAndUpdate(item._id, {room_id: null})
+    .then((data) => {
+      if (data) {
+        console.log('ok')
+      } else {
+        console.log(' not ok')
+
+      }
+    })
+    .catch((err) => {
+      console.log(' not ok')
+    });
+      })
+  })
+
   RoomModel.findByIdAndDelete(req.params.id)
     .then((data) => {
       if (data) {

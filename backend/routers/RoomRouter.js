@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const { checkLogin } = require("../middleware/auth");
 
 
-router.use(checkLogin);
+// router.use(checkLogin);
 
 // getall Room
 router.get("/", RoomController.getAllRoom);

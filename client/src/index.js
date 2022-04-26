@@ -18,9 +18,6 @@ import Localization from './localization'
 import Router from './router'
 import * as serviceWorker from './serviceWorker'
 
-// mocking api
-import 'services/axios/fakeApi'
-
 // middlewared
 const history = createHashHistory()
 const sagaMiddleware = createSagaMiddleware()

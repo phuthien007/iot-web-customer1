@@ -1,38 +1,37 @@
-import { Button, Card, Divider, notification, Popconfirm, Table, Tag } from 'antd'
+import { Button, Card, Divider, Popconfirm, Table, Tag } from 'antd'
 import Search from 'antd/lib/input/Search'
-import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ModalView from './ModalView3Channel'
 
-const id = '_id'
+const fakeData = [
+  {
+    id: 1,
+    dev_addr: 'A',
+    dev_name_1: 'Tủ lạnh',
+    relay_state_1: true,
+    dev_name_2: 'Tủ lạnh',
+    relay_state_2: false,
+    dev_name_3: 'Tủ lạnh',
+    relay_state_3: true,
+  },
+  {
+    id: 2,
+    dev_addr: 'B',
+    dev_name_1: 'Quạt',
+    relay_state_1: true,
+    dev_name_2: 'Quạt',
+    relay_state_2: false,
+    dev_name_3: 'Quạt',
+    relay_state_3: true,
+  },
+]
 
-function Relay3Channel({ roomId, roomData }) {
+function Relay3Channel() {
   const [data, setData] = useState([])
 
-  const handleDeleteRelay3Channel = i => {
-    Axios.delete(`http://localhost:5000/api/v1/relay3channel/${i[id]}`)
-      .then(() => {
-        notification.success({
-          message: 'Thành công',
-          description: 'Xóa thành công',
-        })
-        const newData = data.filter(item => item[id] !== i[id])
-        setData(newData)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   useEffect(() => {
-    Axios.get(`http://localhost:5000/api/v1/relay3channel?room_id=${roomId}`)
-      .then(resp => {
-        setData([...resp.data])
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, [roomId])
+    setData(fakeData)
+  }, [])
 
   const columns = [
     {
@@ -79,16 +78,11 @@ function Relay3Channel({ roomId, roomData }) {
       key: record => `key_action_${record.id}`,
       render: record => (
         <span>
-          <ModalView roomData={roomData} record={record} />
+          <ModalView record={record} />
 
           <Divider type="vertical" />
 
-          <Popconfirm
-            onConfirm={() => handleDeleteRelay3Channel(record)}
-            title="Bạn có muốn xóa?"
-            okText="Yes"
-            cancelText="No"
-          >
+          <Popconfirm title="Are you sure?" okText="Yes" cancelText="No">
             <Button danger>Delete</Button>
           </Popconfirm>
           <Divider type="vertical" />

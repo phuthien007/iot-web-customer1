@@ -1,49 +1,14 @@
-import { Button, Card, Col, Divider, notification, Popconfirm, Row } from 'antd'
-import Axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import socketIOClient from 'socket.io-client'
+import { Button, Card, Col, Divider, Popconfirm, Row } from 'antd'
+import React from 'react'
 import ViewSensor from './ViewSensor'
 
+const fakeData = {
+  tmp: 25.4,
+  humidity: 30,
+  air_quality: 41.2,
+}
 
-
-
-
-const id = '_id'
-function Sensor({ roomId }) {
-  const [data, setData] = useState([])
-  useEffect(() => {
-    Axios.get(`http://localhost:5000/api/v1/sensors?room_id=${roomId}`)
-      .then(resp => {
-        setData([...resp.data])
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, [roomId])
-
-  useEffect(() =>{
-    const socket = socketIOClient("http://localhost:5000")
-    socket.on("sensor", dt =>{
-      const d = (dt.filter(item => item.room_id === roomId))
-      setData(d)
-    })
-  }, [roomId])
-
-  const handleDeleteSensor = i => {
-    Axios.delete(`http://localhost:5000/api/v1/sensors/${i[id]}`)
-      .then(() => {
-        notification.success({
-          message: 'Thành công',
-          description: 'Xóa thành công',
-        })
-        const newData = data.filter(item => item[id] !== i[id])
-        setData(newData)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
+function Sensor() {
   return (
     <>
       <Card
@@ -56,41 +21,26 @@ function Sensor({ roomId }) {
           marginTop: 20,
         }}
       >
-        {data.length ? (
-          <>
-            {data.map(item => (
-              <>
-                <Row style={{ fontSize: 24 }}>
-                  <Col span={5}>
-                    Nhiệt độ: <p>{item.temp} độ C</p>
-                  </Col>
-                  <Col span={5}>
-                    Độ ẩm: <p>{item.humidity} %</p>
-                  </Col>
-                  <Col span={5}>
-                    Chất lượng không khí: <p>{item.air_quality} ppm</p>
-                  </Col>
-                  <Col span={9}>
-                    <ViewSensor />
-                    <Popconfirm
-                      title="Bạn có muốn xóa?"
-                      onConfirm={() => handleDeleteSensor(item)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button size="large" style={{ marginLeft: 5 }} danger>
-                        Delete
-                      </Button>
-                    </Popconfirm>
-                  </Col>
-                </Row>
-                <Divider />
-              </>
-            ))}
-          </>
-        ) : (
-          <span> Không có sensor</span>
-        )}
+        <Row style={{ fontSize: 24 }}>
+          <Col span={5}>
+            Nhiệt độ: <p>{fakeData.tmp} độ C</p>
+          </Col>
+          <Col span={5}>
+            Độ ẩm: <p>{fakeData.humidity} %</p>
+          </Col>
+          <Col span={5}>
+            Chất lượng không khí: <p>{fakeData.air_quality} ppm</p>
+          </Col>
+          <Col span={9}>
+            <ViewSensor />
+            <Popconfirm title="Are you sure?" okText="Yes" cancelText="No">
+              <Button size="large" style={{ marginLeft: 5 }} danger>
+                Delete
+              </Button>
+            </Popconfirm>
+          </Col>
+        </Row>
+        <Divider />
       </Card>
     </>
   )

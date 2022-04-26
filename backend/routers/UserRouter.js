@@ -30,7 +30,7 @@ router.post("/login", (req, res) => {
 // register user
 router.post("/register", (req, res) => UserController.registerUser(req, res));
 
-router.use(checkLogin);
+// router.use(checkLogin);
 
 // getall user
 router.get("/", UserController.getAllUser);
